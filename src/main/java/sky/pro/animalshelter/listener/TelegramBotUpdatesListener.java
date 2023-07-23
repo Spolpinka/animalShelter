@@ -9,27 +9,25 @@ import com.pengrad.telegrambot.response.SendResponse;
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 import sky.pro.animalshelter.entity.User;
 import sky.pro.animalshelter.service.UserService;
+import sky.pro.animalshelter.text.Replies;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Component
 public class TelegramBotUpdatesListener implements UpdatesListener {
-
+    private final UserService userService;
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
+
+    private Replies replies = new Replies();
     private final TelegramBot telegramBot;
 
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot) {
+    public TelegramBotUpdatesListener(UserService userService, TelegramBot telegramBot) {
+        this.userService = userService;
         this.telegramBot = telegramBot;
 
 
@@ -49,12 +47,31 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 Message message=update.message();
                 Long chatId=message.chat().id();
                 String text= message.text();
-                if("/start".equals(text)){
-                    SendMessage sendMessage = new SendMessage(chatId, "Привет!");
-                    SendResponse sendResponse = telegramBot.execute(sendMessage);
-                    if (!sendResponse.isOk()) {
-                        logger.error("Error during message:{}", sendResponse.description());
-                    }
+                String userName = message.chat().username();
+                //создаем нового юзера
+                User user = new User();
+                user.setChatId(chatId);
+                user.setName(userName);
+                user.setTimeOfRegistration(LocalDateTime.now());
+                //определяем, зарегистирован ли уже такой пользователь
+                boolean userExist = userService.getAllUsers().contains(user);
+                if("/start".equals(text) && !userExist){//посылаем приветствие и выбор собака/кошка
+                    userService.save(user);
+                    sendMessage(chatId, replies.getHello());
+                } else if ("/start".equals(text) && userExist){//только выбор собака/кошка
+                    sendMessage(chatId, replies.getUserAlreadyExist());
+                } else if ("/кошка".equals(text)){ //выбрали кошку + переход в основное меню
+                    user.setDog(false);
+                    userService.save(user);
+                    sendMessage(chatId, replies.getChooseCat());
+                    sendMessage(chatId, replies.getMainManu());
+                } else if ("/собака".equals(text)) {//выбрали собаку + переход в основное меню
+                    user.setDog(true);
+                    userService.save(user);
+                    sendMessage(chatId, replies.getChooseDog());
+                    sendMessage(chatId, replies.getMainManu());
+                } else {//в остальных случаях зовем волонтера
+                    sendMessage(chatId, replies.getCallVolunteer());
                 }
             });
 
@@ -62,6 +79,14 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             logger.error(e.getMessage(), e);
         }
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
+    }
+
+    private void sendMessage(long id, String message) {
+        SendMessage sendMessage = new SendMessage(id, "Привет!");
+        SendResponse sendResponse = telegramBot.execute(sendMessage);
+        if (!sendResponse.isOk()) {
+            logger.error("Error during message:{}", sendResponse.description());
+        }
     }
 }
 
