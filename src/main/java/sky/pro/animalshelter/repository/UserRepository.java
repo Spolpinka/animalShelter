@@ -9,8 +9,7 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    List<User> findAllByNotificationDateTime(LocalDateTime localDateTime);
-    List<User> findAllByNotificationDateTimeAndChatId(LocalDateTime localDateTime,long chatId);
+    User findByChatId(long chatId);
 
 }
 
