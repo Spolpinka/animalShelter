@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
 import jakarta.annotation.PostConstruct;
@@ -87,6 +88,37 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         if (!sendResponse.isOk()) {
             logger.error("Error during message:{}", sendResponse.description());
         }
+    }
+
+    private void setMenuStage0(long chatId) {
+        /*logger.info("Set menu stage 0 for chat:{}", chatId);
+        // Создаем клавиуатуру
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup("собака", "кошка");
+        answer.setReplyMarkup(replyKeyboardMarkup);
+        replyKeyboardMarkup.setSelective(false);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
+
+        // Создаем список строк клавиатуры
+        List<KeyboardRow> keyboard = new ArrayList<KeyboardRow>();
+
+        // Первая строчка клавиатуры
+        KeyboardRow keyboardFirstRow = new KeyboardRow();
+        // Добавляем кнопки в первую строчку клавиатуры
+        keyboardFirstRow.add("Текст 1");
+        keyboardFirstRow.add("Текст 2");
+
+        KeyboardRow keyboard2Row = new KeyboardRow();
+        // Добавляем кнопки во вторую строчку клавиатуры
+        keyboard2Row.add("Текст 3");
+        keyboard2Row.add("Текст 4");
+        keyboard2Row.add("Текст 5");
+
+        // Добавляем все строчки клавиатуры в список
+        keyboard.add(keyboardFirstRow);
+        keyboard.add(keyboard2Row);
+        // добавляем список клавиатуре
+        replyKeyboardMarkup.setKeyboard(keyboard);*/
     }
 }
 
