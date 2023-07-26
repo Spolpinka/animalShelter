@@ -26,8 +26,8 @@ public class DogAdopter {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "cat_id", nullable = false)
-    private long catId;
+    @Column(name = "dog_id", nullable = false)
+    private long dogId;
 
     @Column(name = "is_adopted", nullable = false)
     private boolean isAdopted;
