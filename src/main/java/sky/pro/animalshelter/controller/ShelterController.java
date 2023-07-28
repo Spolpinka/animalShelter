@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 public class ShelterController {
 
     @GetMapping("/{name}")
-    public ShelterController getShelter(@PathVariable("name") String name) {
-        return null;
+public void getShelter(@PathVariable("name") String name) {
+
     }
 }
