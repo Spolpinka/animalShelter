@@ -4,7 +4,10 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
+import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
+import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
+import com.pengrad.telegrambot.model.request.ParseMode;
+import com.pengrad.telegrambot.request.AnswerCallbackQuery;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
 import jakarta.annotation.PostConstruct;
@@ -45,9 +48,30 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         try {
             updates.forEach(update -> {
                 logger.info("Handles update:{}", update);
-                Message message=update.message();
-                Long chatId=message.chat().id();
-                String text= message.text();
+
+                if (update.callbackQuery() != null) {
+                    String callbackData = update.callbackQuery().data();
+                    long chatId = update.callbackQuery().message().chat().id();
+                    if ("shelterInfo".equals(callbackData)) {
+
+                        sendMessage(chatId, "Много разнооборазной и интересной информации о приюте! Stage 1 в общем-то");
+                        messageWasRead(update);//чтобы кнопка не висла
+                    } else if ("adoptionInfo".equals(callbackData)) {
+
+                        sendMessage(chatId, "Тут переход в меню stage 2");
+                        messageWasRead(update);
+                    } else if ("petReport".equals(callbackData)) {
+                        sendMessage(chatId, "Тут, понятное дело, в stage 3");
+                        messageWasRead(update);
+                    } else if ("volunteer".equals(callbackData)) {
+                        sendMessage(chatId, "Волонтёёр! Волонтёёёёёр!!!! Ты тут?");
+                        messageWasRead(update);
+                    }
+                }
+
+                Message message = update.message();
+                Long chatId = message.chat().id();
+                String text = message.text();
                 String userName = message.chat().username();
                 //создаем нового юзера
                 User user = new User();
@@ -56,21 +80,21 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 user.setTimeOfRegistration(LocalDateTime.now());
                 //определяем, зарегистирован ли уже такой пользователь
                 boolean userExist = userService.getAllUsers().contains(user);
-                if("/start".equals(text) && !userExist){//посылаем приветствие и выбор собака/кошка
+                if ("/start".equals(text) && !userExist) {//посылаем приветствие и выбор собака/кошка
                     userService.save(user);
                     sendMessage(chatId, replies.getHello());
-                } else if ("/start".equals(text) && userExist){//только выбор собака/кошка
+                } else if ("/start".equals(text)) {//только выбор собака/кошка
                     sendMessage(chatId, replies.getUserAlreadyExist());
-                } else if ("/кошка".equals(text)){ //выбрали кошку + переход в основное меню
+                } else if ("/кошка".equals(text)) { //выбрали кошку + переход в основное меню
                     user.setDog(false);
                     userService.save(user);
                     sendMessage(chatId, replies.getChooseCat());
-                    sendMessage(chatId, replies.getMainManu());
+                    setMenuStage0(chatId);
                 } else if ("/собака".equals(text)) {//выбрали собаку + переход в основное меню
                     user.setDog(true);
                     userService.save(user);
                     sendMessage(chatId, replies.getChooseDog());
-                    sendMessage(chatId, replies.getMainManu());
+                    setMenuStage0(chatId);
                 } else {//в остальных случаях зовем волонтера
                     sendMessage(chatId, replies.getCallVolunteer());
                 }
@@ -83,7 +107,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     }
 
     private void sendMessage(long id, String message) {
-        SendMessage sendMessage = new SendMessage(id, "Привет!");
+        SendMessage sendMessage = new SendMessage(id, message);
         SendResponse sendResponse = telegramBot.execute(sendMessage);
         if (!sendResponse.isOk()) {
             logger.error("Error during message:{}", sendResponse.description());
@@ -91,34 +115,37 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     }
 
     private void setMenuStage0(long chatId) {
-        /*logger.info("Set menu stage 0 for chat:{}", chatId);
-        // Создаем клавиуатуру
-        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup("собака", "кошка");
-        answer.setReplyMarkup(replyKeyboardMarkup);
-        replyKeyboardMarkup.setSelective(false);
-        replyKeyboardMarkup.setResizeKeyboard(true);
-        replyKeyboardMarkup.setOneTimeKeyboard(false);
+        String menu = "Главное меню";
+        logger.info("Set menu stage 0 for chat:{}", chatId);
+        //формируем кнопки
+        InlineKeyboardButton shelterInfo = new InlineKeyboardButton("Узнать информацию о приюте").callbackData("shelterInfo");
+        InlineKeyboardButton adoptionInfo = new InlineKeyboardButton("Как взять животное из приюта").callbackData("adoptionInfo");
+        InlineKeyboardButton petReport = new InlineKeyboardButton("Прислать отчет о питомце").callbackData("petReport");
+        InlineKeyboardButton volunteer = new InlineKeyboardButton("Позвать волонтера").callbackData("volunteer");
 
-        // Создаем список строк клавиатуры
-        List<KeyboardRow> keyboard = new ArrayList<KeyboardRow>();
+        //формируем клавиатуру, каждый массив - новая строка
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup(
+                new InlineKeyboardButton[]{shelterInfo},
+                new InlineKeyboardButton[]{adoptionInfo},
+                new InlineKeyboardButton[]{petReport},
+                new InlineKeyboardButton[]{volunteer}
+        );
+        //посылаем сообщение
+        SendMessage sendMessage = new SendMessage(chatId, menu)
+                .parseMode(ParseMode.MarkdownV2)
+                .replyMarkup(markup);
+        SendResponse sendResponse = telegramBot.execute(sendMessage);
+        if (!sendResponse.isOk()) {
+            logger.error("Error sending message to user with id: {}, error: {}",
+                    chatId,
+                    sendResponse.errorCode());
+        }
 
-        // Первая строчка клавиатуры
-        KeyboardRow keyboardFirstRow = new KeyboardRow();
-        // Добавляем кнопки в первую строчку клавиатуры
-        keyboardFirstRow.add("Текст 1");
-        keyboardFirstRow.add("Текст 2");
+    }
 
-        KeyboardRow keyboard2Row = new KeyboardRow();
-        // Добавляем кнопки во вторую строчку клавиатуры
-        keyboard2Row.add("Текст 3");
-        keyboard2Row.add("Текст 4");
-        keyboard2Row.add("Текст 5");
-
-        // Добавляем все строчки клавиатуры в список
-        keyboard.add(keyboardFirstRow);
-        keyboard.add(keyboard2Row);
-        // добавляем список клавиатуре
-        replyKeyboardMarkup.setKeyboard(keyboard);*/
+    private void messageWasRead(Update update) {
+        logger.info("Message was read");
+        telegramBot.execute(new AnswerCallbackQuery(update.callbackQuery().id()));
     }
 }
 
