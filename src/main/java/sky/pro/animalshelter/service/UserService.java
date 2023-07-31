@@ -27,6 +27,10 @@ public class UserService {
     public User getByChatId(long chatId) {
         return userRepository.findByChatId(chatId);
     }
+
+    public User getUserByName(String name) {
+        return userRepository.findByName(name);
+    }
 }
 
 
