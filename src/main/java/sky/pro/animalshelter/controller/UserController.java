@@ -36,7 +36,7 @@ public class UserController {
 
     /**
      * Метод по получению пользователя по имени
-     * @param name
+     * @param name имя пользователя
      * @return user
      */
     @Operation(
