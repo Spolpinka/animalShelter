@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sky.pro.animalshelter.entity.Cat;
 import sky.pro.animalshelter.entity.User;
+import sky.pro.animalshelter.exception.UserNotFoundException;
 import sky.pro.animalshelter.service.UserService;
 
 import java.util.List;
@@ -58,6 +59,10 @@ public class UserController {
                     )
             },
             tags = "User")
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> handleUserNotFound() {
+        return ResponseEntity.notFound().build();
+    }
     @GetMapping("/{name}")
     public ResponseEntity<User> getUser(@PathVariable("name") String name) {
         return ResponseEntity.ok(userService.getUserByName(name));

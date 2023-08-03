@@ -6,11 +6,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sky.pro.animalshelter.entity.Cat;
 import sky.pro.animalshelter.entity.Dog;
+import sky.pro.animalshelter.exception.DogNotFoundException;
 import sky.pro.animalshelter.service.DogService;
 
 import java.util.List;
@@ -62,7 +65,11 @@ public class DogController {
                     )
             },
             tags = "Dog")
-    @GetMapping("/dog/{name}")
+    @ExceptionHandler(DogNotFoundException.class)
+    public ResponseEntity<?> handleDogNotFound() {
+        return ResponseEntity.notFound().build();
+    }
+        @GetMapping("/dog/{name}")
     public Dog findByName(String name) {
         return dogService.findByName(name);
     }

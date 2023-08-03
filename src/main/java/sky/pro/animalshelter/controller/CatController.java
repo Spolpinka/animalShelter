@@ -7,11 +7,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sky.pro.animalshelter.entity.Cat;
+import sky.pro.animalshelter.exception.CatNotFoundException;
 import sky.pro.animalshelter.service.CatService;
 
 import java.util.List;
@@ -64,6 +67,11 @@ public class CatController {
                     )
     },
     tags = "Cats")
+    @ExceptionHandler(CatNotFoundException.class)
+    public ResponseEntity<?> handleCatNotFound(){
+        return  ResponseEntity.notFound().build();
+
+    }
 
     @GetMapping("/cat/{name}")
     public Cat findByName(String name) {
