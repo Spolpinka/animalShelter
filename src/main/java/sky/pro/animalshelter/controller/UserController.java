@@ -67,7 +67,6 @@ public class UserController {
     public ResponseEntity<User> getUser(@PathVariable("name") String name) {
         return ResponseEntity.ok(userService.getUserByName(name));
     }
-
     /**
      * Метод по получению всех пользователей
      * @return список пользователей
