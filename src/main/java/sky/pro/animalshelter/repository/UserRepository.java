@@ -11,5 +11,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByChatId(long chatId);
 
+    User findByName(String name);
+
 }
 
