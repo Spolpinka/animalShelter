@@ -24,4 +24,7 @@ public class Cat {
 
     //для фото
     private long image;
+
+    public Cat(int id, String nickname, int age, int weight, String history, Object o) {
+    }
 }
