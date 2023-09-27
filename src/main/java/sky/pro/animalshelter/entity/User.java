@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,6 +16,8 @@ import java.time.LocalDateTime;
 @Table(name = "user")
 @EqualsAndHashCode(of = "chatId")
 public class User {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -31,6 +34,14 @@ public class User {
     //поле для определения, к какому приюту относится, dog or cat
     @Column(name = "is_dog")
     private boolean isDog;
+    private boolean dog;
+
+    public User(int id, String name, int chatId, LocalDate now) {
+    }
+
+    public User() {
+        
+    }
 
     @Override
     public String toString() {
@@ -46,5 +57,24 @@ public class User {
                 timeOfRegistration.getMinute() + ":" +
                 timeOfRegistration.getSecond() +
                 ", приют для " + (isDog ? "собак" : "кошек");
+    }
+
+    public boolean isDog() {
+        return dog;
+    }
+
+    public void setDog(boolean dog) {
+        this.dog = dog;
+    }
+
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTimeOfRegistration(LocalDateTime now) {
     }
 }
