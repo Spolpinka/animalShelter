@@ -34,8 +34,13 @@ public class User {
     //поле для определения, к какому приюту относится, dog or cat
     @Column(name = "is_dog")
     private boolean isDog;
+    private boolean dog;
 
-    public User(int i, String роман, int i1, LocalDate now) {
+    public User(int id, String name, int chatId, LocalDate now) {
+    }
+
+    public User() {
+        
     }
 
     @Override
@@ -52,5 +57,24 @@ public class User {
                 timeOfRegistration.getMinute() + ":" +
                 timeOfRegistration.getSecond() +
                 ", приют для " + (isDog ? "собак" : "кошек");
+    }
+
+    public boolean isDog() {
+        return dog;
+    }
+
+    public void setDog(boolean dog) {
+        this.dog = dog;
+    }
+
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTimeOfRegistration(LocalDateTime now) {
     }
 }

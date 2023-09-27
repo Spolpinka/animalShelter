@@ -4,6 +4,10 @@ import lombok.Getter;
 
 @Getter
 public class Replies {
+    public String getHello() {
+        return hello;
+    }
+
     private final String hello = """
             Привет!
             Я - бот приюта для животных из Астаны
@@ -17,6 +21,10 @@ public class Replies {
     private final String chooseDog = """
             Поздравляем, ты выбрал собак!
             """;
+
+    public String getCallVolunteer() {
+        return callVolunteer;
+    }
 
     private final String callVolunteer = """
             зову волонтера
@@ -104,4 +112,100 @@ public class Replies {
             список причин, почему могут отказать и не дать забрать собаку из приюта
             """;
 
-}
+    private final String getDogShelterStory= """
+            История приюта собак""";
+
+
+    private final String getCatShelterStory= """
+            История приюта кошек""";
+
+
+    private final String getDogShelterScheduleAndAddress= """
+            Адрес приюта собак""";
+
+
+    private final String getCatShelterScheduleAndAddress= """
+            Адрес приюта собак""";
+
+
+    public String getChooseDog() {
+        return chooseDog;
+    }
+
+    public String getChooseCat() {
+        return chooseCat;
+    }
+
+    public String getDogSafetyRules() {
+        return dogSafetyRules;
+    }
+
+    public String getCatSafetyRules() {
+        return catSafetyRules;
+    }
+
+    public String getUserContacts() {
+        return userContacts;
+    }
+
+    public String getDogMeetingRules() {
+        return dogMeetingRules;
+    }
+
+    public String getCatMeetingRules() {
+        return catMeetingRules;
+    }
+
+    public String getDocsList() {
+        return docsList;
+    }
+
+    public String getDogMoveRecommendation() {
+        return dogMoveRecommendation;
+    }
+
+    public String getCatMoveRecommendation() {
+        return catMoveRecommendation;
+    }
+
+
+    public String getYoungDogHomeRecommendation() {
+        return youngDogHomeRecommendation;
+    }
+
+    public String getYoungCatHomeRecommendation() {
+        return youngCatHomeRecommendation;
+    }
+
+    public String getDogHomeRecommendation() {
+        return dogHomeRecommendation;
+    }
+
+    public String getDogHomeRecommendationForInvasion() {
+        return dogHomeRecommendationForInvasion;
+    }
+
+    public String getCatHomeRecommendationForInvasion() {
+        return catHomeRecommendationForInvasion;
+    }
+
+    public String getCynologistAdvise() {
+        return cynologistAdvise;
+    }
+
+    public String getCynologistList() {
+        return cynologistList;
+    }
+
+    public String getReasonForRejectionList() {
+        return reasonForRejectionList;
+    }
+
+    public String getDogShelterStory() {
+        return dogShelterStory;
+    }
+
+    private final String  setDogShelterStory = """
+            рекомендации по проверенным кинологам для дальнейшего обращения к ним
+            """;
+    }
