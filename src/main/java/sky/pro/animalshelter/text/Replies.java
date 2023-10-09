@@ -208,4 +208,13 @@ public class Replies {
     private final String  setDogShelterStory = """
             рекомендации по проверенным кинологам для дальнейшего обращения к ним
             """;
+
+    public String getCatShelterStory() {return getCatShelterStory;
     }
+
+    public String getDogShelterScheduleAndAddress() { return getDogShelterScheduleAndAddress;
+    }
+
+    public String getCatShelterScheduleAndAddress() { return getCatShelterScheduleAndAddress;
+    }
+}

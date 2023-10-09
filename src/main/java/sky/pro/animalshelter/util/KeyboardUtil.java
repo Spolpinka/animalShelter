@@ -19,8 +19,8 @@ public class KeyboardUtil {
     }
     private List<InlineKeyboardButton> getKeyboardButtons(CallbackDataRequest... string){
         List<InlineKeyboardButton> inlineKeyboardButtons=new ArrayList<>();
-        for (CallbackDataRequest string: string){
-            inlineKeyboardButtons.add(button(string.getText(),string.getCallbackData()));
+        for (CallbackDataRequest string1: string){
+            inlineKeyboardButtons.add(button(string.getText(), string.getCallbackData()));
         }
         return inlineKeyboardButtons;
     }

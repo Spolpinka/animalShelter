@@ -1,8 +1,6 @@
 package sky.pro.animalshelter.util;
 
 import com.pengrad.telegrambot.TelegramBot;
-import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
-import com.pengrad.telegrambot.model.request.Keyboard;
 import com.pengrad.telegrambot.request.SendMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -26,7 +24,7 @@ private MessageSender messageSender;
 @Captor
 private ArgumentCaptor<SendMessage> captor;
 
-private KeyboardUtil keyboardUtil= new KeyboardUtil();
+private KeyboardUtil keyboardUtil;
 Long id=1L;
 String text="Текстовое сообщение пользователю";
 
@@ -34,7 +32,7 @@ String text="Текстовое сообщение пользователю";
     @DisplayName("Вывод сообщения")
     void sendMessage() {
         messageSender.sendMessage(id,text);
-        verify(telegramBot,times(1).execute(captor.capture());
+        verify(telegramBot, times(1).execute(captor.capture()));
         var sendMassage=captor.getValue();
         assertEquals(sendMassage.getParameters().get("text"),text);
         assertEquals(sendMassage.getParameters().get("chat_id"),id);

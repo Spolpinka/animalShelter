@@ -15,6 +15,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,18 +34,18 @@ class DogServiceTest {
     @DisplayName("Получить собаку по клички")
     void shouldReturnByName() {
 
-        when(dogRepository.findByName(anyLong()))
+        when(dogRepository.findByName(anyString()))
                 .thenReturn(Optional.ofNullable(Archy));
-        assertEquals(Archy,DogService.findByName(anyLong()));
+        assertEquals(Archy,DogService.findByName(String.valueOf(anyLong())));
     }
 
     @Test
     @DisplayName("Получение собаку по id")
     void shouldReturnCatWhenfindById() {
 
-        when(dogRepository.findByName(anyLong()))
+        when(dogRepository.findById(anyLong()))
                 .thenReturn(Optional.ofNullable(Archy));
-        assertEquals(Archy,dogService.findByName(anyLong()));
+        assertEquals(Archy,dogService.findById(anyLong()));
     }
 
 

@@ -2,9 +2,10 @@ package listener;
 
 import com.pengrad.telegrambot.BotUtils;
 import com.pengrad.telegrambot.TelegramBot;
+import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
-import org.hibernate.sql.Update;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.OngoingStubbing;
 import sky.pro.animalshelter.listener.TelegramBotUpdatesListener;
 import sky.pro.animalshelter.service.CatService;
 import sky.pro.animalshelter.service.DogService;
@@ -24,6 +26,8 @@ import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
+
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class TelegramBotUpdatesListenerTest {
@@ -42,7 +46,7 @@ public class TelegramBotUpdatesListenerTest {
     public void handleStartTest() throws URISyntaxException, IOException {
         String json = Files.readString(
                 Path.of(TelegramBotUpdatesListenerTest.class.getResource("update.json").toURI()));
-        Update update= BotUtils.fromJson(json.replace("%text","volunteer"),Update.class);
+        Update update= BotUtils.fromJson(json.replace("%text","volunteer"), Update.class);
         SendResponse sendResponse= BotUtils.fromJson("""
         {
         "ok":true
@@ -50,7 +54,6 @@ public class TelegramBotUpdatesListenerTest {
 
         telegramBotUpdatesListener.process(Collections.singletonList(update));
         when(telegramBot.execute(any())).thenReturn(sendResponse);
-
 
 
         ArgumentCaptor<SendMessage> argumentCaptor=ArgumentCaptor.forClass(SendMessage.class);

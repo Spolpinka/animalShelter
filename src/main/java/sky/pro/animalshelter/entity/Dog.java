@@ -24,4 +24,7 @@ public class Dog {
 
     //для фото
     private long image;
+
+    public Dog(int i, String archy, int i1, int i2, String s, int i3) {
+    }
 }
