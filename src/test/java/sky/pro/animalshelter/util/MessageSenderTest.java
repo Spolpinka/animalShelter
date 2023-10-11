@@ -36,7 +36,6 @@ String text="Текстовое сообщение пользователю";
         var sendMassage=captor.getValue();
         assertEquals(sendMassage.getParameters().get("text"),text);
         assertEquals(sendMassage.getParameters().get("chat_id"),id);
-
     }
 
     @Test
