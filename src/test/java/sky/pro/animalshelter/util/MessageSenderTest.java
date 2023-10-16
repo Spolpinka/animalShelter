@@ -12,8 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class MessageSenderTest {
@@ -30,9 +29,9 @@ String text="Текстовое сообщение пользователю";
 
     @Test
     @DisplayName("Вывод сообщения")
-    void sendMessage() {
+    void sendMessage(Object sendResponse) {
         messageSender.sendMessage(id,text);
-        verify(telegramBot, times(1).execute(captor.capture()));
+        verify(telegramBot, times(1)).execute(captor.capture());
         var sendMassage=captor.getValue();
         assertEquals(sendMassage.getParameters().get("text"),text);
         assertEquals(sendMassage.getParameters().get("chat_id"),id);

@@ -6,15 +6,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.OngoingStubbing;
 import sky.pro.animalshelter.entity.Cat;
 import sky.pro.animalshelter.repository.CatRepository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -35,11 +33,8 @@ new Cat(3,"Том",4,5,   "Нашли в лесу",3));
     @Test
     @DisplayName("Получить кота по клички")
     void shouldReturnByName() {
-
-        OngoingStubbing<Cat> catOngoingStubbing;
-        catOngoingStubbing = when(catRepository.findByName(anyString()))
-                .thenReturn(Optional.ofNullable(lev));
-        assertEquals(lev,CatService.findByName(anyString()));
+        when(catRepository.findByName(anyString())).thenReturn(lev);
+        assertEquals(lev,catService.findByName(String.valueOf(anyLong())));
     }
 
     @Test
@@ -47,7 +42,7 @@ new Cat(3,"Том",4,5,   "Нашли в лесу",3));
     void shouldReturnCatWhenfindById() {
 
         when(catRepository.findById(anyLong()))
-                .thenReturn(Optional.ofNullable(lev));
+                .thenReturn(lev);
         assertEquals(lev,catService.findById(anyLong()));
     }
 
@@ -55,8 +50,9 @@ new Cat(3,"Том",4,5,   "Нашли в лесу",3));
     @Test
     @DisplayName("Получить всех котов")
     void shouldReturnfindAll() {
-        when(CatRepository.findAll())
+        when(catRepository.findAll())
                 .thenReturn(CAT_LIST);
         assertIterableEquals(CAT_LIST,catService.findAll());
     }
+
 }

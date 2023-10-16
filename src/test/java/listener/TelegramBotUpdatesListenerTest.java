@@ -5,8 +5,6 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
-
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -14,19 +12,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.OngoingStubbing;
 import sky.pro.animalshelter.listener.TelegramBotUpdatesListener;
 import sky.pro.animalshelter.service.CatService;
 import sky.pro.animalshelter.service.DogService;
 import sky.pro.animalshelter.service.UserService;
+import org.assertj.core.api.Assertions;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -60,7 +58,7 @@ public class TelegramBotUpdatesListenerTest {
         Mockito.verify(telegramBot).execute(argumentCaptor.capture());
         SendMessage actual= argumentCaptor.getValue();
         Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(update.message().chat().id());
-        Assertions.assertThat(actual.getParameters().get("text")).isEqualTo(update.message("Волонтёёр! Волонтёёооор!!!! Ты тут?"));
+        Assertions.assertThat(actual.getParameters().get("text")).isEqualTo("Волонтёёр! Волонтёёооор!!!! Ты тут?");
     }
     @Test
     public void handleReportFormTest() throws URISyntaxException, IOException {
@@ -81,6 +79,6 @@ public class TelegramBotUpdatesListenerTest {
         Mockito.verify(telegramBot).execute(argumentCaptor.capture());
         SendMessage actual= argumentCaptor.getValue();
         Assertions.assertThat(actual.getParameters().get("chat_id")).isEqualTo(update.message().chat().id());
-        Assertions.assertThat(actual.getParameters().get("text")).isEqualTo(update.message("здесь должна быть форма отчета"));
+        Assertions.assertThat(actual.getParameters().get("text")).isEqualTo("здесь должна быть форма отчета");
     }
 }

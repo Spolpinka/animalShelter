@@ -45,7 +45,6 @@ public class CatController {
 
     /**
      * Метод по получению кота по имени
-     * @param name
      * @return кот
      */
     @Operation(

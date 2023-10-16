@@ -36,12 +36,9 @@ public class User {
     private boolean isDog;
     private boolean dog;
 
-    public User(int id, String name, int chatId, LocalDate now) {
+    public User(long id, String name, long chat_id, LocalDate now) {
     }
 
-    public User() {
-
-    }
 
 
     @Override

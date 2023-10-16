@@ -43,7 +43,6 @@ public class DogController {
 
     /**
      * Метод по получению собаки по имени
-     * @param name
      * @return dog
      */
     @Operation(

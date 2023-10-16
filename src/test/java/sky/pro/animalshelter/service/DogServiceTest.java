@@ -5,15 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import sky.pro.animalshelter.entity.Cat;
 import sky.pro.animalshelter.entity.Dog;
-import sky.pro.animalshelter.repository.CatRepository;
 import sky.pro.animalshelter.repository.DogRepository;
 
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -35,8 +33,8 @@ class DogServiceTest {
     void shouldReturnByName() {
 
         when(dogRepository.findByName(anyString()))
-                .thenReturn(Optional.ofNullable(Archy));
-        assertEquals(Archy,DogService.findByName(String.valueOf(anyLong())));
+                .thenReturn(Archy);
+        assertEquals(Archy,dogService.findByName(String.valueOf(anyLong())));
     }
 
     @Test
@@ -44,7 +42,7 @@ class DogServiceTest {
     void shouldReturnCatWhenfindById() {
 
         when(dogRepository.findById(anyLong()))
-                .thenReturn(Optional.ofNullable(Archy));
+                .thenReturn(Archy);
         assertEquals(Archy,dogService.findById(anyLong()));
     }
 

@@ -6,20 +6,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import sky.pro.animalshelter.entity.Cat;
 import sky.pro.animalshelter.entity.User;
 import sky.pro.animalshelter.repository.CatRepository;
 import sky.pro.animalshelter.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static sky.pro.animalshelter.service.CatServiceTest.CAT_LIST;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -38,22 +36,25 @@ import static sky.pro.animalshelter.service.CatServiceTest.CAT_LIST;
                 new User());
 
         @Test
-        @DisplayName("Получить кота по клички")
+        @DisplayName("Получить пользователя по имени")
         void shouldReturnByName() {
 
-            when(catRepository.findByName(anyString()))
-                    .thenReturn(Optional.ofNullable());
-            assertEquals(CatService.findByName(anyString()));
+            when(userRepository.findByName(anyString()))
+                    .thenReturn(test);
+            assertEquals(test,userRepository.findByName(anyString()));
         }
-
         @Test
-        @DisplayName("Получение кота по id")
-        void shouldReturnCatWhenfindById() { }
+        @DisplayName("Получение пользователя по id")
+        void shouldReturnUserWhenfindById() {
+            when(userRepository.findByChatId(anyLong()))
+                    .thenReturn(test);
+            assertEquals(test,userService.getByChatId(anyLong()));
+        }
         @Test
-        @DisplayName("Получить всех котов")
+        @DisplayName("Получить всех пользователей")
         void shouldReturnfindAll() {
-            when(CatRepository.findAll())
-                    .thenReturn(CAT_LIST);
-            assertIterableEquals(CAT_LIST,catService.findAll());
+            when(userRepository.findAll())
+                    .thenReturn(USERS_LIST);
+            assertIterableEquals(USERS_LIST,userService.getAllUsers());
         }
     }

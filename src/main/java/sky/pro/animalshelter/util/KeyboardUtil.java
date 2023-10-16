@@ -20,7 +20,7 @@ public class KeyboardUtil {
     private List<InlineKeyboardButton> getKeyboardButtons(CallbackDataRequest... string){
         List<InlineKeyboardButton> inlineKeyboardButtons=new ArrayList<>();
         for (CallbackDataRequest string1: string){
-            inlineKeyboardButtons.add(button(string.getText(), string.getCallbackData()));
+            inlineKeyboardButtons.add(button(string1.name(), string1.name()));
         }
         return inlineKeyboardButtons;
     }
